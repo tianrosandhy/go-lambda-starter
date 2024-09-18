@@ -1,0 +1,45 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: go-lambda-starter
+service: go-serverless # Define your service name
+
+provider:
+  iam:
+    role: arn:aws:iam::XXXXXXXXX:role/ROLENAME
+  name: aws
+  runtime: provided.al2023
+  deploymentBucket:
+    name: go-lambda-starter
+  memorySize: 512
+  timeout: 30 # optional, in seconds, default is 6
+  versionFunctions: true # optional, default is true
+  region: ap-southeast-1
+  tracing:
+    lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
+
+package:
+ individually: true
+
+custom:
+  go:
+    supportedRuntimes: ["provided.al2023"]
+    buildProvidedRuntimeAsBootstrap: true
+
+functions:
+  appname:
+    handler: bootstrap # route to binary
+    environment:
+      RUN_AS_LOCAL: false
+      ENVIRONMENT: production
+    package:
+      artifact: build/golambdastarter.zip
+    events:
+      - http:
+          path: /hello
+          method: GET
+          cors:
+            allowCredentials: true
+            allowOrigins: ["*"]
+            allowMethods: ["*"]
+            allowHeaders: ["*"]
+            exposeHeaders: ["*"]
+            maxAge: 300

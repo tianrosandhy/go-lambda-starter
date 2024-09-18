@@ -1,0 +1,5 @@
+{
+    "type": "example-event-payload",
+    "message": "You can test any of the lambda payload, just define the struct here, but dont forget to define the struct too",
+    "bool_data": true
+}
